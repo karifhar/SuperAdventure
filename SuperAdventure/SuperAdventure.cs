@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engine;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,18 +9,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace SuperAdventure
 {
     public partial class SuperAdventure : Form
     {
+        private Player _player { get; set; } = new Player();
+
         public SuperAdventure()
         {
             InitializeComponent();
-        }
-
-        private void SuperAdventure_Load(object sender, EventArgs e)
-        {
-
+            _player.CurrentHP = 100;
+            _player.MaxHP = 100;
+            _player.ExpriencePoints = 0;
+            _player.Gold = 50;
+            _player.Level = 1;
+            lblHitPoints.Text = _player.CurrentHP.ToString();
+            lblExperience.Text = _player.ExpriencePoints.ToString();
+            lblGold.Text = _player.Gold.ToString();
+            lblLevel.Text = _player.Level.ToString();
         }
     }
 }
