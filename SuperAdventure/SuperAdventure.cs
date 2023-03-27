@@ -14,26 +14,23 @@ namespace SuperAdventure
 {
     public partial class SuperAdventure : Form
     {
-        private Player _player { get; set; } = new Player();
-        private HealingPotion _healingPotion { get; set; }
+        private Player _player { get; set; }
+        private Location _currentLocation { get; set; }
 
         public SuperAdventure()
         {
             InitializeComponent();
-            _player.CurrentHP = 100;
-            _player.MaxHP = 100;
-            _player.ExpriencePoints = 0;
-            _player.Gold = 50;
-            _player.Level = 1;
-            lblHitPoints.Text = _player.CurrentHP.ToString();
+
+            _currentLocation = new Location(new Guid("fd9d1483-d9b6-4753-8afe-14083d1dde87"),
+                "Home", 
+                "This is your sweet home :)");
+
+            _player = new Player(100, 100, 50, 0, 1);
+
+            lblHitPoints.Text = _player.CurrentHitPoints.ToString();
             lblExperience.Text = _player.ExpriencePoints.ToString();
             lblGold.Text = _player.Gold.ToString();
             lblLevel.Text = _player.Level.ToString();
-        }
-
-        private void SuperAdventure_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
