@@ -15,6 +15,7 @@ namespace SuperAdventure
     public partial class SuperAdventure : Form
     {
         private Player _player { get; set; } = new Player();
+        private HealingPotion _healingPotion { get; set; }
 
         public SuperAdventure()
         {
@@ -28,6 +29,11 @@ namespace SuperAdventure
             lblExperience.Text = _player.ExpriencePoints.ToString();
             lblGold.Text = _player.Gold.ToString();
             lblLevel.Text = _player.Level.ToString();
+        }
+
+        private void SuperAdventure_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
