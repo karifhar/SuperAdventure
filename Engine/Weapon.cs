@@ -10,7 +10,6 @@ namespace Engine
     {
         public int MinimumDamage { get; set; }
         public int MaximumDamage { get; set; }
-
         public Weapon(Guid id, string name, string namePlural, int minDamage, int maxDamage) : base(id, name, namePlural)
         {
             MinimumDamage = minDamage;
