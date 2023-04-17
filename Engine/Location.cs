@@ -11,7 +11,7 @@ namespace Engine
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public Item ItemRequiredToEntern { get; set; }
+        public Item ItemRequiredToEnter { get; set; }
         public Quest QuestAvailableHere { get; set; }
         public Monster MonsterLivingHere { get; set; }
         public Location LocationToNorth { get; set; }

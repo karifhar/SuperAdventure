@@ -11,7 +11,7 @@ namespace Engine
         public static readonly List<Item> Items = new List<Item>();
         public static readonly List<Monster> Monsters = new List<Monster>();
         public static readonly List<Quest> Quests = new List<Quest>();
-        public static readonly List<Location> Locatios = new List<Location>();
+        public static readonly List<Location> Locations = new List<Location>();
 
         public const string ITEM_ID_RUSTY_SWORD = "a8df6982-a6ce-4c12-a2c8-9d996d060773";
         public const string ITEM_ID_RAT_TAIL = "ca531a22-5c6d-435a-8986-9f7c07d7206d";
@@ -44,19 +44,95 @@ namespace Engine
         static World()
         {
             PopulateItems();
-            PopulateMonsters();
+            PopulateMonsters(); 
             PopulateQuests();
             PopulateLocations();
         }
 
         private static void PopulateLocations()
         {
-            throw new NotImplementedException();
+            Location home = new Location(new Guid(LOCATION_ID_HOME), "My Home", "Home sweet home.");
+
+            Location townSquare = new Location(new Guid(LOCATION_ID_TOME_SQUARE), "Tom Square", "You see a fountain.");
+
+            Location alchemistHut = new Location(new Guid(LOCATION_ID_ALCHEMIST_HUT), "Alchemist's Hut", "There are many strange plants on the shelves.");
+            alchemistHut.QuestAvailableHere = QuestById(new Guid(QUEST_ID_CLEAR_ALCHEMIST_GARDEN));
+
+            Location alchemistGarden = new Location(new Guid(LOCATION_ID_ALCHEMIST_GARDEN), "Alchemist's Garden", "Many plants are growing here");
+            alchemistGarden.MonsterLivingHere = MonsterById(new Guid(MONSTER_ID_RAT));
+
+            Location farmhouse = new Location(new Guid(LOCATION_ID_FARMHOUSE), "Farmhouse", "There is a small farmhouse, with a farmer in front.");
+            farmhouse.QuestAvailableHere = QuestById(new Guid(QUEST_ID_CLEAR_FARMERs_FIELD));
+
+            Location farmersField = new Location(new Guid(LOCATION_ID_FARM_FIELD), "Farmer's Field", "You see rows of vegetables growing here.");
+            farmersField.MonsterLivingHere = MonsterById(new Guid(MONSTER_ID_SNAKE));
+
+            Location guardPost = new Location(new Guid(LOCATION_ID_GUARD_POST), "Guard post", "There is a large, tough-looking guard here.",
+                ItemById(new Guid(ITEM_ID_ADVENTURER_PASS)));
+
+            Location bridge = new Location(new Guid(LOCATION_ID_BRIDGE), "Bridge", "A stone bridge crosses a wide river");
+
+            Location spiderField = new Location(new Guid(LOCATION_SPIDER_FIELD), "Forest", "You see spider webs covering covering the trees in this forest.");
+            spiderField.MonsterLivingHere = MonsterById(new Guid(MONSTER_ID_GIANT_SPIDER));
+            
+            
+            home.LocationToNorth = townSquare;
+
+            townSquare.LocationToNorth = alchemistHut;
+            townSquare.LocationToSouth = home;
+            townSquare.LocationToEast = guardPost;
+            townSquare.LocationToWest = farmhouse;
+
+            farmhouse.LocationToEast = townSquare;
+            farmhouse.LocationToWest = farmersField;
+
+            farmersField.LocationToEast = farmhouse;
+
+            alchemistHut.LocationToSouth = townSquare;
+            alchemistHut.LocationToNorth = farmersField;
+
+            alchemistGarden.LocationToSouth = townSquare;
+            alchemistHut.LocationToNorth = alchemistGarden;
+
+            alchemistGarden.LocationToSouth = alchemistHut;
+
+            guardPost.LocationToEast = bridge;
+            guardPost.LocationToWest = townSquare;
+
+            bridge.LocationToWest = guardPost;
+            bridge.LocationToEast = spiderField;
+
+            spiderField.LocationToWest = bridge;
+
+
+            Locations.Add(home);
+            Locations.Add(townSquare);
+            Locations.Add(guardPost);
+            Locations.Add(alchemistHut);
+            Locations.Add(alchemistGarden);
+            Locations.Add(farmhouse);
+            Locations.Add(farmersField);
+            Locations.Add(bridge);
+            Locations.Add(spiderField);
+
         }
 
         private static void PopulateQuests()
         {
-            throw new NotImplementedException();
+            Quest clearAlchemistGarden = new Quest(new Guid(QUEST_ID_CLEAR_ALCHEMIST_GARDEN),
+                "Clear the alchemist's garden",
+                "Kill rats in the garden and bring back 3 rat tails. You'll receive a healing potion and 20 gold pieces", 15, 20);
+            clearAlchemistGarden.QuestCompletionItems.Add(new QuestCompletionItem(ItemById(new Guid(ITEM_ID_RAT_TAIL)), 3));
+            clearAlchemistGarden.RewardItem = ItemById(new Guid(ITEM_ID_HEALING_POTION));
+
+            Quest clearFarmerField = new Quest(new Guid(QUEST_ID_CLEAR_FARMERs_FIELD),
+                "Clear the farmer's field",
+                "Kill snakes in the farmer's field and bring back 2 snake fangs and 1 snake skin. You'll receive and adventure's pass and 25 gold", 20, 25);
+            clearFarmerField.QuestCompletionItems.Add(new QuestCompletionItem(ItemById(new Guid(ITEM_ID_SNAKE_FANG)), 2));
+            clearFarmerField.QuestCompletionItems.Add(new QuestCompletionItem(ItemById(new Guid(ITEM_ID_SNAKESKIN)), 1));
+
+            Quests.Add(clearAlchemistGarden);
+            Quests.Add(clearFarmerField);
         }
 
         private static void PopulateMonsters()
@@ -92,7 +168,6 @@ namespace Engine
             Items.Add(new Item(new Guid(ITEM_ID_ADVENTURER_PASS), "Adventurer pass", "Adventurer passes"));
         }
 
-
         public static Item ItemById(Guid id)
         {
             foreach (Item item in Items)
@@ -103,5 +178,24 @@ namespace Engine
             return null;
         }
 
+        private static Quest QuestById(Guid id)
+        {
+            foreach (Quest quest in Quests)
+            {
+                if (quest.Id == id)
+                    return quest;
+            }
+            return null;
+        }
+
+        private static Monster MonsterById(Guid id)
+        {
+            foreach (Monster monster in Monsters)
+            {
+                if (monster.Id == id)
+                    return monster;
+            }
+            return null;
+        }
     }
 }
